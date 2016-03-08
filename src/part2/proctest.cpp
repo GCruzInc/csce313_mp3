@@ -129,6 +129,7 @@ int buffer_menu() {
 // MAIN FUNCTION 
 // -------------------------------------------------------------------------------- //
 int main(int argc, char * argv[]) {
+    system("clear");
     int pid = buffer_menu();
 
     while(pid != -1) {
