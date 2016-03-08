@@ -1,0 +1,3 @@
+00400000-00401000 r-xp 00000000 00:1a 24803899                           /home/ugrads/g/ghaynes/csce313/CSCE313-MP3/part2/.nfs00000000017a7a3b00001193
+00600000-00601000 r--p 00000000 00:1a 24803899                           /home/ugrads/g/ghaynes/csce313/CSCE313-MP3/part2/.nfs00000000017a7a3b00001193
+00601000-00602000 rw-p 00001000 00:1a 24803899                           /home/ugrads/g/ghaynes/csce313/CSCE313-MP3/part2/.nfs00000000017a7a3b00001193

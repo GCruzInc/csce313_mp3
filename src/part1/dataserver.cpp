@@ -91,7 +91,7 @@ void * handle_data_requests(void * args) {
 /*--------------------------------------------------------------------------*/
 
 void process_hello(RequestChannel & _channel, const string & _request) {
-  _channel.cwrite("hello to you too");
+  _channel.cwrite("hello to you too!");
 }
 
 void process_data(RequestChannel & _channel, const string &  _request) {
@@ -155,7 +155,7 @@ void handle_process_loop(RequestChannel & _channel) {
     cout << "New request is " << request << endl;
 
     if (request.compare("quit") == 0) {
-      _channel.cwrite("bye");
+      _channel.cwrite("bye!");
       usleep(10000);          // give the other end a bit of time.
       break;                  // break out of the loop;
     }

@@ -1,12 +1,20 @@
-# makefile
+# makefile for Darwin & Linux
+UNAME := $(shell uname)
+ifeq ($(UNAME), Darwin)
+    c = clang++ -std=c++11
+else ifeq ($(UNAME), Darwin)
+    c = g++ -std=c++11
+else
+    c = g++-4.7 -std=c++11
+endif
 
 all: dataserver client
 
 reqchannel.o: reqchannel.h reqchannel.cpp
-	g++-4.7 -c -g reqchannel.cpp
+	$(c) -c -g reqchannel.cpp
 
 dataserver: dataserver.cpp reqchannel.o 
-	g++-4.7 -o dataserver dataserver.cpp reqchannel.o -lpthread
+	$(c) -o dataserver dataserver.cpp reqchannel.o -lpthread
 
 client: client.cpp reqchannel.o
-	g++-4.7 -o client client.cpp reqchannel.o
+	$(c) -o client client.cpp reqchannel.o
