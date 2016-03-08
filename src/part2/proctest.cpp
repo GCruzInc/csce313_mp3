@@ -1,3 +1,16 @@
+/*
+ * CSCE-313-502, Dr. A.Tyagi
+ * Machine Problem 3: Unix Processes 
+ * By Eric Chung & Kyle Preston
+ *
+ * Filename: proctest.cpp
+ * Date: 03/07/2016
+ *
+ *
+ *
+ *
+ * -------------------------------------------------------------------------------- //
+ */
 #include <sstream>
 #include <cctype>
 #include <iostream>
