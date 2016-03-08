@@ -90,7 +90,7 @@ vector<string> split(const string &s, char delim) {
 }
 
 
-int buffer() {
+int buffer_menu() {
     cout << "\n----------------------------------------\n";
     cout << "To view a list of processes enter 'ps'\n";
     cout << "To quit enter 'q'\n";
@@ -103,25 +103,24 @@ int buffer() {
     input = my_tolower(input);
 
     if (input == "ps") {
-        system("ls /proc");
-        return buffer();
-    }
-    else if (input == "clear") {
         system("clear");
-        return buffer();
+        system("ls /proc");
+        return buffer_menu();
     }
     else if (input == "q") {
+        system("clear");
         cout << "Bye!" << endl;
         return -1;
     }
     else if (valid_pid_entry(input)) {
+        system("clear");
         int pid = atoi(input.c_str());
         cout << "Returned pid: " << pid << endl;
         return pid; 
     }
     else {
         cout << "Error! Invalid input. Please try again.\n";
-        return buffer();
+        return buffer_menu();
     }
 }
 
@@ -131,7 +130,7 @@ int buffer() {
 // MAIN FUNCTION 
 // -------------------------------------------------------------------------------- //
 int main(int argc, char * argv[]) {
-    int pid = buffer();
+    int pid = buffer_menu();
 
     while(pid != -1) {
         ifstream stat,
@@ -180,7 +179,7 @@ int main(int argc, char * argv[]) {
                 << endl;
 
             //Outputing data
-            cout<<"*****REQUESTED DATA*****" << endl 
+            cout<<"REQUESTED DATA" << endl 
                 << endl
                 << "1) Identifiers" << endl
                 << "Process ID (PID): " << stat_values.at(PID) << endl
@@ -257,6 +256,7 @@ int main(int argc, char * argv[]) {
             string buffer;
             string raw_input = "";
             int i = 0;
+
             while(getline(maps, buffer) && i < 3){
                 raw_input += buffer + '\n';
                 i++;
@@ -276,8 +276,8 @@ int main(int argc, char * argv[]) {
         }
 
         else
-            cout << "ERROR: Unable to access memory map" << endl
-                << "Note: process may not be running" << endl;
+            cout<< "Error! Could not access memory map :/" << endl
+                << "Note that the process may not be running" << endl;
 
         stat.close();
         status.close();
