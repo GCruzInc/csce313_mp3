@@ -94,7 +94,6 @@ int buffer_menu() {
     cout << "\n----------------------------------------\n";
     cout << "To view a list of processes enter 'ps'\n";
     cout << "To quit enter 'q'\n";
-    cout << "To clear the terminal enter 'clear'\n";
     cout << "----------------------------------------\n";
     cout << "Please enter a process id: ";
     string input;
@@ -115,7 +114,7 @@ int buffer_menu() {
     else if (valid_pid_entry(input)) {
         system("clear");
         int pid = atoi(input.c_str());
-        cout << "Returned pid: " << pid << endl;
+        cout << "Returned pid = " << pid << endl;
         return pid; 
     }
     else {
@@ -140,16 +139,18 @@ int main(int argc, char * argv[]) {
         stat.open("/proc/" + int2string(pid) + "/stat");
         status.open("/proc/" + int2string(pid) + "/status");
 
+        // Successfully got pid from /proc
         if(stat && status) {
             cout << "\n/proc/" << pid << "/stat opened..." << endl << endl;
             string raw_input,
                    buffer;
 
+
             while(getline(stat, buffer))
                 raw_input += buffer;
 
-            cout << "/proc/" << pid << "/stat raw input:" << endl;
-            cout << raw_input << endl << endl;
+            cout<< "/proc/" << pid << "/stat raw input:" << endl
+                << raw_input << endl << endl;
 
             istringstream iss(raw_input);
             istream_iterator<string> beg(iss), end;
@@ -163,7 +164,7 @@ int main(int argc, char * argv[]) {
             vector <vector <string> > status_values;
 
             while(getline(status, buffer)) {
-                vector<string> split_vec = split(buffer, ':');
+                vector<string> split_vec = split(buffer, '=');
                 string info = split_vec[1];
                 istringstream iss2(info);
                 istream_iterator<string> beq(iss2), end;
@@ -178,18 +179,18 @@ int main(int argc, char * argv[]) {
                 << "Raw input parsed..." << endl 
                 << endl;
 
-            //Outputing data
+            // Outputing process attributes 
             cout<<"REQUESTED DATA" << endl 
                 << endl
                 << "1) Identifiers" << endl
-                << "Process ID (PID): " << stat_values.at(PID) << endl
-                << "Parent process ID (PPID): " << stat_values.at(PPID) << endl
-                << "Effective user ID (EUID): " << status_values.at(6).at(1) << endl
-                << "Effective group ID (EGID): " << status_values.at(7).at(1) << endl
-                << "Real user ID (RUID): " << status_values.at(6).at(0) << endl
-                << "Real group ID (RGID): " << status_values.at(7).at(0) << endl
-                << "User file system ID (FSUID): " << status_values.at(6).at(3) << endl
-                << "Group file system ID (FSGID): " << status_values.at(7).at(3) << endl 
+                << "    - process ID (PID) = " << stat_values.at(PID) << endl
+                << "    - parent process ID (PPID) = " << stat_values.at(PPID) << endl
+                << "    - effective user ID (EUID) = " << status_values.at(6).at(1) << endl
+                << "    - effective group ID (EGID) = " << status_values.at(7).at(1) << endl
+                << "    - real user ID (RUID) = " << status_values.at(6).at(0) << endl
+                << "    - real group ID (RGID) = " << status_values.at(7).at(0) << endl
+                << "    - user file system ID (FSUID) = " << status_values.at(6).at(3) << endl
+                << "    - group file system ID (FSGID) = " << status_values.at(7).at(3) << endl 
                 << endl;
 
             cout<< "2) State" << endl;
@@ -210,36 +211,36 @@ int main(int argc, char * argv[]) {
             else	
                 cout << "(Unkown)\n\n";
 
-            cout<< "3) Thread Information" << endl
-                << "Thread_info (NUM_THREADS): " << stat_values.at(NUM_THREADS) << endl << endl;	
+            cout<< "3. Thread Information" << endl
+                << "    - number of threads (NUM_THREADS) = " << stat_values.at(NUM_THREADS) << endl << endl;	
 
-            cout<< "4) Priorty" << endl
-                << "Priorty number (PRIORITY): " << stat_values.at(PRIORITY) << endl
-                << "Nice value (NICE): " << stat_values.at(NICE) << endl << endl;
+            cout<< "4. Priorty" << endl
+                << "    - priorty number (PRIORITY) = " << stat_values.at(PRIORITY) << endl
+                << "    - niceness value (NICE) = " << stat_values.at(NICE) << endl << endl;
 
-            cout<< "5) Time Information" << endl
-                << "Time in scheduler in kernal mode (STIME): " << stat_values.at(STIME) << endl
-                << "Time in scheduler in user mode (UTIME): " << stat_values.at(UTIME) << endl
-                << "Time waiting on children in kernal mode (CSTIME): " << stat_values.at(CSTIME) << endl
-                << "Time waiting on children in user mode (CUTIME): " << stat_values.at(CUTIME) << endl 
+            cout<< "5. Time Information" << endl
+                << "    - time process has been scheduled in kernal mode (STIME) = " << stat_values.at(STIME) << endl
+                << "    - time process has been scheduled in user mode (UTIME) = " << stat_values.at(UTIME) << endl
+                << "    - time process has waited on children in kernal mode (CSTIME) = " << stat_values.at(CSTIME) << endl
+                << "    - time process has waited on children in user mode (CUTIME) = " << stat_values.at(CUTIME) << endl 
                 << endl;
 
-            cout<< "6) Address Space" << endl
-                << "Startcode(STARTCODE): " << stat_values.at(STARTCODE) << endl
-                << "Endcode (ENDCODE): " << stat_values.at(ENDCODE) << endl
-                << "ESP (KSTKESP): " << stat_values.at(KSTKESP) << endl
-                << "EIP (KSTKEIP): " << stat_values.at(KSTKEIP) << endl 
+            cout<< "6. Address Space" << endl
+                << "    - startcode(STARTCODE) = " << stat_values.at(STARTCODE) << endl
+                << "    - endcode (ENDCODE) = " << stat_values.at(ENDCODE) << endl
+                << "    - ESP (KSTKESP) = " << stat_values.at(KSTKESP) << endl
+                << "    - EIP (KSTKEIP) = " << stat_values.at(KSTKEIP) << endl 
                 << endl;
 
-            cout << "7) Resources" << endl
-                << "Number of file descriptors (FDSize): " << status_values.at(8).at(0) << endl
-                << "Number of voluntary context switches (vountary_ctxt_switches): " << status_values.at(37).at(0) << endl
-                << "Number of nonvoluntary context switches (nonvountary_ctxt_switches): " << status_values.at(38).at(0) << endl 
+            cout << "7. Resources" << endl
+                << "    - number of file descriptors (FDSize) = " << status_values.at(8).at(0) << endl
+                << "    - number of voluntary context switches (vountary_ctxt_switches) = " << status_values.at(37).at(0) << endl
+                << "    - number of nonvoluntary context switches (nonvountary_ctxt_switches) = " << status_values.at(38).at(0) << endl 
                 << endl;
 
-            cout << "8) Processors" << endl
-                << "Allowed processors: " << status_values.at(33).at(0) << endl
-                << "Last executed processor (PROCESSOR): " << stat_values.at(PROCESSOR)  << endl 
+            cout << "8. Processors" << endl
+                << "    - allowed processors: " << status_values.at(33).at(0) << endl
+                << "    - last used processor (PROCESSOR): " << stat_values.at(PROCESSOR)  << endl 
                 << endl;
         }
 
@@ -253,11 +254,11 @@ int main(int argc, char * argv[]) {
 
         if (maps) {
             cout << "Memory map accessed..." << endl << endl;
-            string buffer;
-            string raw_input = "";
+            string buffer,
+                   raw_input = "";
             int i = 0;
 
-            while(getline(maps, buffer) && i < 3){
+            while(getline(maps, buffer) && i < 3) {
                 raw_input += buffer + '\n';
                 i++;
             }
@@ -266,7 +267,7 @@ int main(int argc, char * argv[]) {
                 cout << "Memory map is empty...\n";
             
             else {
-                cout<< "9) Memory Map" << endl
+                cout<< "9. Memory Map" << endl
                     << raw_input << endl << endl;
                 ofstream out;
                 out.open("out.txt");
@@ -282,9 +283,7 @@ int main(int argc, char * argv[]) {
         stat.close();
         status.close();
         maps.close();
-        pid = buffer();
+        pid = buffer_menu();
     }
-
-    cout << "Program terminated." << endl;
     return 0;
 }
